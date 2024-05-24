@@ -8,5 +8,8 @@ const router =express.Router()
 // User Register
 router.post('/register',multer.single('image'),usercontroller.userRegister)
 
+// user login
+router.post('/login',usercontroller.userlogin)
+
 
 module.exports = router
