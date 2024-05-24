@@ -10,7 +10,10 @@ exports.userRegister = async (req, res) => {
 
     const {username,email,password,image} = req.body
 
-    console.log(req.body);
+
+    const profileimage = req.file ? req.file.filename : image
+
+    
 
     try{
 
@@ -26,9 +29,10 @@ exports.userRegister = async (req, res) => {
 
             const newuser = new users({
 
-                username,email,password,image
+                username,email,password,image:profileimage
 
             })
+
             await newuser.save()
             res.status(200).json(newuser)
 
