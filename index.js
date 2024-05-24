@@ -19,7 +19,7 @@ Chatserver.use(express.json())
 // configuring routes into server
 Chatserver.use(router)
 
-Chatserver.use('./Uploads',express.static('./Uploads'))
+Chatserver.use('/uploads',express.static('./uploads'))
 
 
 const PORT = 3000
