@@ -1,6 +1,7 @@
 const users = require('../Models/UserModel')
 const jwt = require('jsonwebtoken')
-
+const fs = require('fs');
+const path = require('path');
 
 
 
@@ -98,7 +99,7 @@ exports.getusers = async (req, res) => {
 
         const result = await users.findOne({ _id })
 
-        
+
         if (result) {
 
             const rest = { userid: result._id, username: result.username, image: result.image }
@@ -121,5 +122,43 @@ exports.getusers = async (req, res) => {
         console.log(err);
 
     }
+
+}
+
+exports.edituser = async (req, res) => {
+
+
+    const { username, image } = req.body
+
+    const _id = req.payload;
+
+    const profileimage = req.file ? req.file.filename : image
+
+
+    try {
+
+
+        const user = await users.findById({ _id })
+        const oldimage = user.image
+
+        if (req.file && oldimage){
+
+            const fullpath = path.join(__dirname, '..', 'uploads', oldimage)
+            fs.unlinkSync(fullpath)
+
+        }
+
+        const updateuser = await users.findOneAndUpdate({ _id }, { username: username, image: profileimage }, { new: true })
+        res.status(200).json("PROFILE UPDATED")
+
+
+    }
+    catch (err) {
+
+        console.log(err);
+        res.status(406).json(err)
+
+    }
+
 
 }

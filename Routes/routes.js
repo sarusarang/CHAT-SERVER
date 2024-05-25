@@ -15,5 +15,8 @@ router.post('/login',usercontroller.userlogin)
 // getuser
 router.get('/getuser',jwt,usercontroller.getusers)
 
+// edit user profile
+router.put('/edituser',jwt,multer.single('image'),usercontroller.edituser)
+
 
 module.exports = router
