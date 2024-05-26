@@ -162,3 +162,44 @@ exports.edituser = async (req, res) => {
 
 
 }
+
+exports.getallusers = async(req,res)=>{
+
+    const userid = req.payload
+
+
+    try{
+
+
+        const result = await users.find({_id:{$ne:userid}})
+
+        if(result){
+
+            const userdata = result.map(item=>{
+
+                const {image,username,_id} = item
+
+                return {image,username,_id}
+
+            })
+           
+            res.status(200).json(userdata)
+          
+
+        }
+        else{
+
+            res.status(406).json("No Users Found")
+        }
+
+    }
+
+    catch(err){
+
+        console.log(err);
+        res.status(200).json(err)
+
+
+    }
+
+}
