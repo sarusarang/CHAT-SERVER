@@ -67,7 +67,7 @@ exports.userlogin = async (req, res) => {
 
 
             const token = jwt.sign({ email: existinguser.email, username: existinguser.username, userid: existinguser._id }, process.env.Secret_key)
-            const details = { token, user: existinguser.username }
+            const details = { token, user: existinguser.username,_id:existinguser._id}
             res.status(200).json(details)
 
         }

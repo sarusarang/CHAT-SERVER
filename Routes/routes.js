@@ -1,5 +1,6 @@
 const express = require('express')
 const usercontroller = require('../Controllers/UserController')
+const chatcontroller = require('../Controllers/ChatController')
 const multer = require('../MiddleWares/Multer')
 const jwt = require('../MiddleWares/JwtMiddleware')
 
@@ -21,5 +22,11 @@ router.put('/edituser',jwt,multer.single('image'),usercontroller.edituser)
 // get all users
 router.get('/getallusers',jwt,usercontroller.getallusers)
 
+
+// savechats
+router.post('/sendchat',jwt,chatcontroller.savechats)
+
+// showchats 
+router.get("/getchats/:id",jwt,chatcontroller.showchats)
 
 module.exports = router
