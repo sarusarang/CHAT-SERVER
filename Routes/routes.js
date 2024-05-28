@@ -29,4 +29,9 @@ router.post('/sendchat',jwt,chatcontroller.savechats)
 // showchats 
 router.get("/getchats/:id",jwt,chatcontroller.showchats)
 
+// Delete all Chats
+router.delete("/deleteAllChats/:id",jwt,chatcontroller.deleteAllChats)
+
+router.delete("/deleteOneChats/:id",jwt,chatcontroller.Deleteonechat)
+
 module.exports = router

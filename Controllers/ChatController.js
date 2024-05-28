@@ -1,4 +1,5 @@
 const Messages = require('../Models/ChatModel')
+const { io } = require('../Socket/Socket')
 
 
 exports.savechats = async (req, res) => {
@@ -15,7 +16,11 @@ exports.savechats = async (req, res) => {
         })
         await newmessage.save()
 
-        res.status(200).json("message saved")
+
+        io.emit('newMessage', newmessage);
+
+
+        res.status(200).json(newmessage)
 
     }
     catch (err) {
@@ -32,13 +37,11 @@ exports.savechats = async (req, res) => {
 exports.showchats = async (req, res) => {
 
 
-    const {id} = req.params
-
-   
+    const { id } = req.params
 
     try {
 
-        const message = await Messages.find({chatid:id})
+        const message = await Messages.find({ chatid: id })
 
         res.status(200).json(message)
 
@@ -48,6 +51,57 @@ exports.showchats = async (req, res) => {
         console.log(err);
         res.status(406).json(err)
 
+    }
+
+
+}
+
+exports.deleteAllChats = async (req,res)=>{
+
+
+    try{
+
+        const {id} = req.params
+
+        const result = await Messages.deleteMany({chatid:id})
+
+        res.status(200).json(`DATA DELETED SUCCESSFULLY ${Date.now()}`)
+
+
+
+    }
+
+    catch(err){
+
+        console.log(err);
+        res.status(406).json(err)
+    }
+
+
+}
+
+exports.Deleteonechat = async(req,res)=>{
+
+   
+
+    try{
+
+
+        const {id} = req.params
+
+        const result = await Messages.deleteOne({_id:id})
+
+        console.log(result);
+
+        res.status(200).json(`Message Deleted successfully ${Date.now()}`)
+
+
+    }
+
+    catch(err){
+
+        console.log(err);
+        res.status(406).json(err)
     }
 
 
