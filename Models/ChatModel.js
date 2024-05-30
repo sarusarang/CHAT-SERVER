@@ -21,12 +21,17 @@ const chatschema = new mongoose.Schema({
     text:{
 
         type:String,
-        required:true
+       
     },
     chatid:{
 
         type:String,
         required:true
+
+    },
+    image:{
+
+        type:String
 
     },
     timestamp:{

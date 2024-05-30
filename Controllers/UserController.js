@@ -13,7 +13,7 @@ exports.userRegister = async (req, res) => {
     const { username, email, password, image } = req.body
 
 
-    const profileimage = req.file ? req.file.filename : image
+    const profileimage = req.file ? req.filename : image
 
 
 

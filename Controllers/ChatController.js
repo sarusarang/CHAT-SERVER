@@ -1,19 +1,25 @@
 const Messages = require('../Models/ChatModel')
 const { io } = require('../Socket/Socket')
+const fs = require('fs');
+const path = require('path');
 
-
+// SAVE CHATS
 exports.savechats = async (req, res) => {
 
 
-    const { senderid, receiverid, text, chatid } = req.body
+    const { senderid, receiverid, text, chatid, image } = req.body
+
+    const img = req.file ? req.file.filename : image
+
 
     try {
 
         const newmessage = new Messages({
 
-            sender: senderid, receiver: receiverid, text: text, chatid: chatid
+            sender: senderid, receiver: receiverid, text: text, chatid: chatid, image: img
 
         })
+
         await newmessage.save()
 
 
@@ -25,7 +31,7 @@ exports.savechats = async (req, res) => {
     }
     catch (err) {
 
-        console.log(err);
+        console.log("error");
 
     }
 
@@ -33,7 +39,7 @@ exports.savechats = async (req, res) => {
 }
 
 
-
+// SHOW USER CHATS
 exports.showchats = async (req, res) => {
 
 
@@ -56,14 +62,29 @@ exports.showchats = async (req, res) => {
 
 }
 
-exports.deleteAllChats = async (req,res)=>{
+
+// TO DELETE ALL CHATS
+exports.deleteAllChats = async (req, res) => {
 
 
-    try{
+    try {
 
-        const {id} = req.params
+        const { id } = req.params
 
-        const result = await Messages.deleteMany({chatid:id})
+        const messages = await Messages.find({ chatid: id });
+
+
+        messages.forEach(item => {
+
+            if (item.image) {
+
+                const fullpath = path.join(__dirname, '..', 'uploads', item.image);
+                fs.unlinkSync(fullpath);
+            }
+
+        })
+
+        const result = await Messages.deleteMany({ chatid: id })
 
         res.status(200).json(`DATA DELETED SUCCESSFULLY ${Date.now()}`)
 
@@ -71,7 +92,7 @@ exports.deleteAllChats = async (req,res)=>{
 
     }
 
-    catch(err){
+    catch (err) {
 
         console.log(err);
         res.status(406).json(err)
@@ -80,29 +101,40 @@ exports.deleteAllChats = async (req,res)=>{
 
 }
 
-exports.Deleteonechat = async(req,res)=>{
+// TO DELETE ONE CHAT
+exports.Deleteonechat = async (req, res) => {
 
-   
-
-    try{
+    try {
 
 
-        const {id} = req.params
+        const { id } = req.params
 
-        const result = await Messages.deleteOne({_id:id})
 
-        console.log(result);
+        const messages = await Messages.find({ _id: id });
+
+
+        messages.forEach(item => {
+
+            if (item.image) {
+
+                const fullpath = path.join(__dirname, '..', 'uploads', item.image);
+                fs.unlinkSync(fullpath);
+            }
+
+        })
+
+
+        const result = await Messages.deleteOne({ _id: id })
 
         res.status(200).json(`Message Deleted successfully ${Date.now()}`)
 
 
     }
 
-    catch(err){
+    catch (err) {
 
         console.log(err);
         res.status(406).json(err)
     }
-
 
 }

@@ -24,7 +24,7 @@ router.get('/getallusers',jwt,usercontroller.getallusers)
 
 
 // savechats
-router.post('/sendchat',jwt,chatcontroller.savechats)
+router.post('/sendchat',jwt,multer.single('image'),chatcontroller.savechats)
 
 // showchats 
 router.get("/getchats/:id",jwt,chatcontroller.showchats)
@@ -32,6 +32,7 @@ router.get("/getchats/:id",jwt,chatcontroller.showchats)
 // Delete all Chats
 router.delete("/deleteAllChats/:id",jwt,chatcontroller.deleteAllChats)
 
+// DELETE ONE CHAT
 router.delete("/deleteOneChats/:id",jwt,chatcontroller.Deleteonechat)
 
 module.exports = router
