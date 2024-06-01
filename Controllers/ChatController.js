@@ -32,6 +32,7 @@ exports.savechats = async (req, res) => {
     catch (err) {
 
         console.log("error");
+        console.log(err);
 
     }
 
@@ -90,9 +91,16 @@ exports.deleteAllChats = async (req, res) => {
         const result = await Messages.deleteMany({ chatid: id })
 
 
+
+
         const afterdelete = await Messages.find({ chatid: id })
 
-        io.emit('afterdelete', afterdelete)
+        const arr = [afterdelete,id]
+        
+
+        io.emit('afterdelete', arr)
+
+
 
         res.status(200).json(`DATA DELETED SUCCESSFULLY ${Date.now()}`)
 
@@ -109,14 +117,20 @@ exports.deleteAllChats = async (req, res) => {
 
 }
 
+
+
+
+
+
 // TO DELETE ONE CHAT
 exports.Deleteonechat = async (req, res) => {
 
     try {
 
 
-        const { id,chatid } = req.params
+        const { id, chatid } = req.params
 
+        const CID = chatid
 
         const messages = await Messages.find({ _id: id });
 
@@ -136,9 +150,13 @@ exports.Deleteonechat = async (req, res) => {
 
 
 
-        const onedelete = await Messages.find({ chatid: chatid })
+        const onedelete = await Messages.find({chatid:CID})
 
+
+    
         io.emit('onedelete', onedelete)
+
+    
 
         res.status(200).json(`Message Deleted successfully ${Date.now()}`)
 
