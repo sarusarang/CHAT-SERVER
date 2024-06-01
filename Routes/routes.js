@@ -33,6 +33,6 @@ router.get("/getchats/:id",jwt,chatcontroller.showchats)
 router.delete("/deleteAllChats/:id",jwt,chatcontroller.deleteAllChats)
 
 // DELETE ONE CHAT
-router.delete("/deleteOneChats/:id",jwt,chatcontroller.Deleteonechat)
+router.delete("/deleteOneChats/:id/:chatid",jwt,chatcontroller.Deleteonechat)
 
 module.exports = router

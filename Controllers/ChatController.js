@@ -63,6 +63,9 @@ exports.showchats = async (req, res) => {
 }
 
 
+
+
+
 // TO DELETE ALL CHATS
 exports.deleteAllChats = async (req, res) => {
 
@@ -86,6 +89,11 @@ exports.deleteAllChats = async (req, res) => {
 
         const result = await Messages.deleteMany({ chatid: id })
 
+
+        const afterdelete = await Messages.find({ chatid: id })
+
+        io.emit('afterdelete', afterdelete)
+
         res.status(200).json(`DATA DELETED SUCCESSFULLY ${Date.now()}`)
 
 
@@ -107,7 +115,7 @@ exports.Deleteonechat = async (req, res) => {
     try {
 
 
-        const { id } = req.params
+        const { id,chatid } = req.params
 
 
         const messages = await Messages.find({ _id: id });
@@ -126,7 +134,14 @@ exports.Deleteonechat = async (req, res) => {
 
         const result = await Messages.deleteOne({ _id: id })
 
+
+
+        const onedelete = await Messages.find({ chatid: chatid })
+
+        io.emit('onedelete', onedelete)
+
         res.status(200).json(`Message Deleted successfully ${Date.now()}`)
+
 
 
     }
