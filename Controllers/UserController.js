@@ -13,8 +13,9 @@ exports.userRegister = async (req, res) => {
     const { username, email, password, image } = req.body
 
 
-    const profileimage = req.file ? req.filename : image
+    const profileimage = req.file ? req.file.filename : image
 
+  
 
 
     try {
@@ -141,7 +142,7 @@ exports.edituser = async (req, res) => {
         const user = await users.findById({ _id })
         const oldimage = user.image
 
-        // if (oldimage.length>0 && req.file){
+        // if (oldimage && req.file){
 
         //     const fullpath = path.join(__dirname, '..', 'uploads', oldimage)
         //     fs.unlinkSync(fullpath)
