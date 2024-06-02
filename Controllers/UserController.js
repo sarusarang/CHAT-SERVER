@@ -141,7 +141,7 @@ exports.edituser = async (req, res) => {
         const user = await users.findById({ _id })
         const oldimage = user.image
 
-        if (req.file && oldimage){
+        if (oldimage.length>0 && req.file){
 
             const fullpath = path.join(__dirname, '..', 'uploads', oldimage)
             fs.unlinkSync(fullpath)
