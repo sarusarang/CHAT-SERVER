@@ -141,12 +141,12 @@ exports.edituser = async (req, res) => {
         const user = await users.findById({ _id })
         const oldimage = user.image
 
-        if (oldimage.length>0 && req.file){
+        // if (oldimage.length>0 && req.file){
 
-            const fullpath = path.join(__dirname, '..', 'uploads', oldimage)
-            fs.unlinkSync(fullpath)
+        //     const fullpath = path.join(__dirname, '..', 'uploads', oldimage)
+        //     fs.unlinkSync(fullpath)
 
-        }
+        // }
 
         const updateuser = await users.findOneAndUpdate({ _id }, { username: username, image: profileimage }, { new: true })
         res.status(200).json("PROFILE UPDATED")
